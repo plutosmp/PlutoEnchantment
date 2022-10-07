@@ -1,0 +1,100 @@
+import java.nio.file.Files
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group 'top.plutomc'
+version plugin_version
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+}
+
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT"
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = plugin_name + "-api"
+            version = plugin_version
+
+            from components.java
+
+            pom {
+                name = plugin_display_name
+                description = plugin_description
+                url = plugin_git
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://mit-license.org'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'deechael'
+                        name = 'DeeChael'
+                        email = 'DeeChael@outlook.com'
+                    }
+                    developer {
+                        id = 'plutosmp'
+                        name = 'Pluto SMP'
+                        email = 'yuu8583@proton.me'
+                    }
+                }
+                scm {
+                    connection = plugin_scm_git
+                    developerConnection = plugin_scm_ssh
+                    url = plugin_git
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            var ENV = System.getenv()
+            credentials {
+                username = ENV.get(ossrh_username_system_path)
+                password = ENV.get(ossrh_password_system_path)
+            }
+            name = 'maven_central_release'
+            url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+        }
+    }
+}
+
+signing {
+    var ENV = System.getenv()
+    var key = ENV.get(signing_key_base64_system_path)
+    var password = ENV.get(signing_password_system_path)
+    // useInMemoryPgpKeys(String.join("\n", Files.readAllLines(new File(key).toPath())), password)
+    // If you want to publish, make the line above not a comment but a line of codes
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    options.addStringOption("charset", "UTF-8")
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}

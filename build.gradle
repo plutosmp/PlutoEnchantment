@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'top.plutomc'
+version plugin_version
+
+repositories {
+}
+
+dependencies {
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
