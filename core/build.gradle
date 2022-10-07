@@ -18,13 +18,19 @@ repositories {
     maven {
         url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
+    maven {
+        name = 'CodeMC'
+        url = 'https://repo.codemc.org/repository/maven-public/'
+    }
 }
 
 
 dependencies {
     implementation project(":api")
+    implementation 'net.deechael:Useless:1.03.1'
     compileOnly "io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT"
     compileOnly 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
+    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.10.0'
     annotationProcessor 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
 }
 

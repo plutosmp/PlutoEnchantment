@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT"
+    compileOnly 'net.deechael:Useless:1.03.1'
 }
 
 java {
